@@ -4,12 +4,14 @@ import pygame
 
 from settings import *
 
+from raycasting import Raycasting
 
 class Player:
 	def __init__(self, game):
 		self.game = game
 		self.x, self.y = PLAYER_POS
 		self.angle = PLAYER_ANGLE	
+		self.raycasting = Raycasting(self)
 	
 	def movement(self):
 		a_cos = math.cos(self.angle)
@@ -48,11 +50,12 @@ class Player:
 		return (x, y) not in self.game.map.objects
 
 	def draw(self):
-		pygame.draw.line(self.game.window, "yellow", (self.x * 100, self.y * 100), (self.x * 100 + WIDTH * math.cos(self.angle), self.y * 100 + WIDTH * math.sin(self.angle)), 2)	
+		# pygame.draw.line(self.game.window, "yellow", (self.x * 100, self.y * 100), (self.x * 100 + WIDTH * math.cos(self.angle), self.y * 100 + WIDTH * math.sin(self.angle)), 2)	
 		pygame.draw.circle(self.game.window, "green", (self.x * 100, self.y * 100), 15)
 
 	def update(self):
 		self.movement()
+		self.raycasting.update()
 	
 	@property 
 	def pos(self):
