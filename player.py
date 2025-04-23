@@ -35,15 +35,16 @@ class Player:
 			dx += speed_sin
 			dy += -speed_cos
 
-		if self.is_not_collided(int(self.x + dx), int(self.y)):
+		scale = PLAYER_SIZE / self.game.delta_time
+		if self.is_not_collided(int(self.x + dx * scale), int(self.y)):
 			self.x += dx
-		if self.is_not_collided(int(self.x), int(self.y + dy)):
+		if self.is_not_collided(int(self.x), int(self.y + dy * scale)):
 			self.y += dy
 		
-		if keys[pygame.K_LEFT]:
-			self.angle += -PLAYER_ROT_SPEED * self.game.delta_time
-		if keys[pygame.K_RIGHT]:
-			self.angle += PLAYER_ROT_SPEED * self.game.delta_time
+		# if keys[pygame.K_LEFT]:
+		# 	self.angle += -PLAYER_ROT_SPEED * self.game.delta_time
+		# if keys[pygame.K_RIGHT]:
+		# 	self.angle += PLAYER_ROT_SPEED * self.game.delta_time
 		self.angle %= math.tau
 
 	def is_not_collided(self, x, y):
@@ -52,9 +53,20 @@ class Player:
 	def draw(self):
 		# pygame.draw.line(self.game.window, "yellow", (self.x * 100, self.y * 100), (self.x * 100 + WIDTH * math.cos(self.angle), self.y * 100 + WIDTH * math.sin(self.angle)), 2)	
 		pygame.draw.circle(self.game.window, "green", (self.x * 100, self.y * 100), 15)
+	
+	def handle_mouse(self):
+		mx, my = pygame.mouse.get_pos()
+		if mx < MOUSE_BORDER_LEFT or mx > MOUSE_BORDER_RIGHT:
+			print(1)
+			pygame.mouse.set_pos((HALF_WIDTH, HALF_HEIGHT))
+		self.rel = pygame.mouse.get_rel()[0]
+		self.rel = max(-MOUSE_MAX_REL, min(MOUSE_MAX_REL, self.rel))
+		self.angle += self.rel * MOUSE_SENSITIVITY * self.game.delta_time
+		self.angle %= math.tau
 
 	def update(self):
 		self.movement()
+		self.handle_mouse()
 		self.raycasting.update()
 	
 	@property 
