@@ -16,7 +16,7 @@ FLOOR_COLOR = (30, 30, 30)
 SKY_IMAGE_PATH = join("resources", "textures", "sky.png")
 
 #player settings
-PLAYER_POS = 7, 3 # mini_map
+PLAYER_POS = 7, 5 # mini_map
 PLAYER_ANGLE = 0
 PLAYER_ROT_SPEED = 0.002
 PLAYER_SPEED = 0.004
@@ -33,6 +33,7 @@ MOUSE_BORDER_RIGHT = WIDTH - MOUSE_BORDER_LEFT
 FOV = math.pi / 3
 HALF_FOV = FOV / 2
 NUM_RAYS = WIDTH // 2
+HALF_NUM_RAYS = NUM_RAYS // 2
 DELTA_ANGLE = FOV / NUM_RAYS
 MAX_DEPTH = 20
 

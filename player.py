@@ -45,7 +45,6 @@ class Player:
 		# 	self.angle += -PLAYER_ROT_SPEED * self.game.delta_time
 		# if keys[pygame.K_RIGHT]:
 		# 	self.angle += PLAYER_ROT_SPEED * self.game.delta_time
-		self.angle %= math.tau
 
 	def is_not_collided(self, x, y):
 		return (x, y) not in self.game.map.objects
@@ -57,7 +56,6 @@ class Player:
 	def handle_mouse(self):
 		mx, my = pygame.mouse.get_pos()
 		if mx < MOUSE_BORDER_LEFT or mx > MOUSE_BORDER_RIGHT:
-			print(1)
 			pygame.mouse.set_pos((HALF_WIDTH, HALF_HEIGHT))
 		self.rel = pygame.mouse.get_rel()[0]
 		self.rel = max(-MOUSE_MAX_REL, min(MOUSE_MAX_REL, self.rel))

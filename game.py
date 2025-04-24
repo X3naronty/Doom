@@ -4,6 +4,7 @@ import sys
 from map import Map
 from player import Player
 from object_renderer import ObjectRenderer
+from object_handler import ObjectHandler
 
 
 class Game:
@@ -15,10 +16,12 @@ class Game:
         self.map = Map(self)
         self.object_renderer = ObjectRenderer(self)
         self.player = Player(self)
+        self.object_handler = ObjectHandler(self)
         self.delta_time = 1
 
     def update(self):
         self.player.update()
+        self.object_handler.update()
         pygame.display.flip()
         self.delta_time = self.clock.tick(FPS)
         pygame.display.set_caption(f"{self.clock.get_fps():.1f}")
