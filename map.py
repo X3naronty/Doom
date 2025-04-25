@@ -33,7 +33,7 @@ class Map:
 		for i, row in enumerate(map.mini_map):
 			for index, value in enumerate(row):
 				if value: objects[(index, i)] = value
-		print(objects)
+		# print(objects)
 		return objects
 
 

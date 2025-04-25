@@ -12,7 +12,7 @@ from collections import deque
 class SpriteObject:
 	def __init__(self, game, 
 			  		path = join("resources", "sprites", "static_sprites"), 
-					pos = (6, 6),
+					pos = (6, 7),
 					scale = 1.0,
 					vertical_shift = 0.2
 				):
@@ -81,12 +81,12 @@ class AnimatedSprite(SpriteObject):
 	def update(self):
 		super().update()
 		self.check_animation_time()
-		self.animate(self.images)
+		self.animate()
 	
-	def animate(self, images):
+	def animate(self):
 		if self.animation_trigger:
-			images.rotate(-1)
-			self.image = images[0]
+			self.images.rotate(-1)
+			self.image = self.images[0]
 	
 	def check_animation_time(self):
 		self.animation_trigger = False
@@ -94,6 +94,7 @@ class AnimatedSprite(SpriteObject):
 		if time_now - self.animation_time_prev > self.animation_time:
 			self.animation_time_prev = time_now
 			self.animation_trigger = True
+		return self.animation_trigger
 	
 	def get_images(self, path):
 		images = deque()
