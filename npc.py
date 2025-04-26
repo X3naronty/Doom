@@ -23,7 +23,7 @@ class NPC(AnimatedSprite):
         self.sprites["pain"] = self.get_images(join(path, "..", "pain"))
         self.sprites["walk"] = self.get_images(join(path, "..", "walk"))
 
-        self.attack_dist = randint(3, 6)
+        self.attack_dist = 3
         self.speed = 0.03
         self.size = 10
         self.health = 20
@@ -47,7 +47,7 @@ class NPC(AnimatedSprite):
         self.is_observable = self.player_npc_raycasting()
         self.run_logic()
 
-        self.draw_ray_cast()
+        # self.draw_ray_cast()
 
     @property
     def map_pos(self):
@@ -100,6 +100,7 @@ class NPC(AnimatedSprite):
             tile_hor = int(x_hor), int(y_hor)
             if tile_hor == self.map_pos:
                 player_dist_h = depth_hor
+                break
             if tile_hor in self.game.map.objects:
                 wall_dist_h = depth_hor
                 break
@@ -107,7 +108,7 @@ class NPC(AnimatedSprite):
             y_hor += dy
             depth_hor += delta_depth
 
-        player_dist = max(player_dist_h, player_dist_v)
+        self.dist = player_dist = max(player_dist_h, player_dist_v)
         wall_dist = max(wall_dist_h, wall_dist_v)
 
         if 0 < player_dist < wall_dist or not wall_dist:
@@ -145,8 +146,11 @@ class NPC(AnimatedSprite):
     def move(self):
         player = self.game.player
         next_pos = next_x, next_y = self.game.bfs.get_next_step(self.map_pos, player.map_pos)
-        
-        if next_pos not in self.game.object_handler.npc_positions: 
+        # next_post = next_x, next_y = player.map_pos
+
+        if next_pos not in self.game.object_handler.npc_positions:
+            # print(self.game.object_handler.npc_positions)
+
             angle = math.atan2(next_y + 0.5 - self.y, next_x + 0.5 - self.x)
 
             dx = self.speed * math.cos(angle)        
@@ -160,10 +164,24 @@ class NPC(AnimatedSprite):
     def is_not_collided(self, x, y):
         return (x, y) not in self.game.map.objects and (x, y) != self.game.player.map_pos 
 
+    def handle_attack(self):
+        if self.animation_trigger:
+            self.game.sound.npc_shot.play()
+            
+
+
     def run_logic(self):
         if self.alive:
             if self.check_hit():
-                self.handle_hit()
+                if self.health > 0:
+                    self.handle_hit()
+                else: self.handle_death()
+            elif self.dist <= self.attack_dist and self.is_observable:
+                if not self.is_animating: 
+                    self.images = self.sprites["attack"]
+                    self.is_animating = True 
+                    self.animation_count = 0
+                self.handle_attack()
             elif self.is_observable or self.is_reachable: 
                 self.move()
                 if not self.is_animating:

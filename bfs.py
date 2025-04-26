@@ -23,9 +23,10 @@ class BFS:
 		for i, row in enumerate(self.map):
 			for j, val in enumerate(row):
 				if not val:
-					graph[(j, i)] = [
+					graph[(j, i)] = graph.get((j, i), []) + [
 						(j + dx, i + dy) for (dx, dy) in self.ways if (j + dx, i + dy) not in self.obstacles
 					]
+		print(len(graph))
 		return graph
 	
 	def get_next_step(self, start, end):

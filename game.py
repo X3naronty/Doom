@@ -41,7 +41,7 @@ class Game:
         pygame.display.set_caption(f"{self.clock.get_fps():.1f}")
 
     def check_events(self):
-        self.global_trigger = False
+        self.global_trigger =False
         for event in pygame.event.get():
             if event.type == self.global_event:
                 self.global_trigger = True 
@@ -55,11 +55,11 @@ class Game:
                     pass
                     
     def draw(self):
-        self.window.fill("black")
-        # self.object_renderer.draw()
-        # self.weapon.draw()
-        self.map.draw()
-        self.player.draw()
+        # self.window.fill("black")
+        self.object_renderer.draw()
+        self.weapon.draw()
+        # self.map.draw()
+        # self.player.draw()
 
     def run(self):
         while True:
