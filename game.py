@@ -7,6 +7,7 @@ from object_renderer import ObjectRenderer
 from object_handler import ObjectHandler
 from weapon import Weapon
 from sound import Sound
+from bfs import BFS
 
 
 class Game:
@@ -17,6 +18,10 @@ class Game:
         self.clock = pygame.time.Clock()
         self.delta_time = 1
         self.assign_game_entities()
+        self.global_trigger = False
+        self.global_event = pygame.USEREVENT + 0
+        pygame.time.set_timer(self.global_event, 40)
+        
 
     def assign_game_entities(self):
         self.map = Map(self)
@@ -25,6 +30,7 @@ class Game:
         self.object_handler = ObjectHandler(self)
         self.weapon = Weapon(self)
         self.sound = Sound(self)
+        self.bfs = BFS(self) 
 
     def update(self):
         self.player.update()
@@ -35,7 +41,10 @@ class Game:
         pygame.display.set_caption(f"{self.clock.get_fps():.1f}")
 
     def check_events(self):
+        self.global_trigger = False
         for event in pygame.event.get():
+            if event.type == self.global_event:
+                self.global_trigger = True 
             match event.type:
                 case pygame.QUIT:
                     pygame.quit()
@@ -45,15 +54,12 @@ class Game:
                 case default:
                     pass
                     
-        
-            
-
     def draw(self):
-        # self.window.fill("black")
-        self.object_renderer.draw()
-        self.weapon.draw()
-        # self.map.draw()
-        # self.player.draw()
+        self.window.fill("black")
+        # self.object_renderer.draw()
+        # self.weapon.draw()
+        self.map.draw()
+        self.player.draw()
 
     def run(self):
         while True:

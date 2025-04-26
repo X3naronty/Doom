@@ -33,6 +33,7 @@ class Weapon(AnimatedSprite):
         self.reload = False
         self.animation_count = 0
         self.animation_len = len(self.images)
+        self.damage = 10
 
     def draw(self):
         self.game.window.blit(self.images[0], self.pos)

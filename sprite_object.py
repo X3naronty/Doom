@@ -34,6 +34,7 @@ class SpriteObject:
 		dx = self.x - self.game.player.x 
 		dy = self.y - self.game.player.y
 		self.dx, self.dy = dx, dy
+
 		self.theta = math.atan2(dy, dx)
 
 		delta = self.theta - self.game.player.angle
@@ -84,9 +85,11 @@ class AnimatedSprite(SpriteObject):
 		self.animate()
 	
 	def animate(self):
+		self.image = self.images[0]
+
 		if self.animation_trigger:
 			self.images.rotate(-1)
-			self.image = self.images[0]
+
 	
 	def check_animation_time(self):
 		self.animation_trigger = False
