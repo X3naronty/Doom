@@ -27,7 +27,7 @@ class NPC(AnimatedSprite):
         self.speed = 0.03
         self.size = 10
         self.health = 20
-        self.attack_damage = 10
+        self.damage = 10
         self.accuracy = 0.15
         self.alive = True
 
@@ -142,7 +142,6 @@ class NPC(AnimatedSprite):
         self.animation_count = 0
         self.is_animating = True
 
-
     def move(self):
         player = self.game.player
         next_pos = next_x, next_y = self.game.bfs.get_next_step(self.map_pos, player.map_pos)
@@ -167,8 +166,8 @@ class NPC(AnimatedSprite):
     def handle_attack(self):
         if self.animation_trigger:
             self.game.sound.npc_shot.play()
-            
-
+            if random() < self.accuracy:
+                self.game.player.get_damage(self.damage)
 
     def run_logic(self):
         if self.alive:
